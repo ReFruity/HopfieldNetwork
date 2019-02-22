@@ -7,12 +7,31 @@ const Board = (() => {
   let network
 
   window.addEventListener('load', () => {
+    const seed = parseInt(Math.random() * 1e10)
+    Math.seedrandom(seed)
+    console.log(`Random seed: ${seed}`)
+
     canvas = document.getElementById('canvas')
     canvas.width = canvasSize
     canvas.height = canvasSize
     context = canvas.getContext('2d')
     network = new HopfieldNetwork(boardSize * boardSize)
-    canvas.addEventListener('click', (event) => { console.log(event) })
+    canvas.addEventListener('click', (event) => {
+      console.log(event)
+      const x = parseInt(event.offsetX / cellSize)
+      const y = parseInt(event.offsetY / cellSize)
+      const cell = x * boardSize + y
+      const value = network.getCell(cell)
+      
+      if (value === 1) {
+        network.clearCell(cell)
+      } else {
+        network.setCell(cell)
+      }
+
+      clear(canvas)
+      drawNetwork(context, boardSize, cellSize, network)
+    })
 
     // network.initRandom()
     network.initRandomSymmetrical()
