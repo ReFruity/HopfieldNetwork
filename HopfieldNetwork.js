@@ -107,4 +107,20 @@ class HopfieldNetwork {
       }
     }
   }
+
+  exportJSON() {
+    return {
+      size: this._size,
+      state: this._state,
+      thresholds: this._thresholds,
+      weights: this._weights
+    }
+  }
+
+  importJSON(json) {
+    this._size = json.size
+    this._thresholds = json.thresholds
+    this._state = json.state
+    this._weights = json.weights
+  }
 }

@@ -18,6 +18,10 @@ body {
   width: 100%;
 }
 
+#HNNModal .collapse {
+  margin-top: 10px;
+}
+
 #HNNModal input {
   width: 30px;
   text-align: center;

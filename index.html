@@ -64,10 +64,27 @@
             <span>Weights</span>
             <div id="weights"></div>
           </div>
+          <div class="collapse" id="collapseJSON">
+            <div class="input-group mb-3">
+              <textarea id="JSONTextarea" cols="30" rows="10" class="form-control"></textarea>
+            </div>
+            <div class="input-group mb-3">
+              <button type="button" class="btn btn-primary" onclick="Board.importHNN()">Import</button>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" onclick="">Import</button>
-          <button type="button" class="btn btn-secondary" onclick="">Export</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-toggle="collapse"
+            data-target="#collapseJSON"
+            aria-expanded="false"
+            aria-controls="collapseJSON"
+            onclick="Board.exportHNN()"
+          >
+            Import/Export
+          </button>
           <button type="button" class="btn btn-secondary" onclick="Board.clearHNN()">Clear Network</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="Board.saveHNN()">Save changes</button>

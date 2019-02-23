@@ -126,11 +126,27 @@ const Board = (() => {
     populateHNNInputs()
   }
 
+  function exportHNN() {
+    const JSONTextarea = document.getElementById('JSONTextarea')
+    JSONTextarea.value = JSON.stringify(network.exportJSON(), null, 2)
+  }
+
+  function importHNN() {
+    const JSONTextarea = document.getElementById('JSONTextarea')
+    network.importJSON(JSON.parse(JSONTextarea.value))
+    console.log(network)
+    populateHNNInputs()
+    clear(canvas)
+    drawNetwork(context, boardSize, cellSize, network)
+  }
+
   return {
     iterate,
     apply,
     populateHNNInputs,
     saveHNN,
-    clearHNN
+    clearHNN,
+    exportHNN,
+    importHNN
   }
 })()
