@@ -1,13 +1,7 @@
 class HopfieldNetwork {
   constructor(size) {
     this._size = size
-    this._thresholds = new Array(this._size).fill(0)
-    this._state = new Array(this._size).fill(0)
-    this._weights = []
-
-    for (let i = 0; i < this._size; i++) {
-      this._weights[i] = new Array(this._size).fill(0)
-    }
+    this.clearAll()
   }
 
   setThreshold(x, threshold) {
@@ -30,10 +24,27 @@ class HopfieldNetwork {
     this._state = new Array(this._size).fill(0)
   }
 
+  clearThresholds() {
+    this._thresholds = new Array(this._size).fill(0)
+  }
+
+  clearWeights() {
+    this._weights = []
+
+    for (let i = 0; i < this._size; i++) {
+      this._weights[i] = new Array(this._size).fill(0)
+    }
+  }
+
+  clearAll() {
+    this.clearState()
+    this.clearThresholds()
+    this.clearWeights()
+  }
+
   getCell(x) {
     return this._state[x]
   }
-
 
   setWeight(x, y, weight) {
     this._weights[x][y] = weight

@@ -1,23 +1,14 @@
 const Board = (() => {
-  const canvasSize = 900
-  const boardSize = 10
-  const cellSize = canvasSize / boardSize
-  let canvas
-  let context
-  let network
+  let boardSize, cellSize, canvasSize, canvas, context, network
 
   window.addEventListener('load', () => {
-    const seed = parseInt(Math.random() * 1e10)
-    Math.seedrandom(seed)
-    console.log(`Random seed: ${seed}`)
+    const randomSeed = parseInt(Math.random() * 1e10)
+    const randomSeedInput = document.getElementById('randomSeed')
+    randomSeedInput.value = randomSeed
 
-    canvas = document.getElementById('canvas')
-    canvas.width = canvasSize
-    canvas.height = canvasSize
-    context = canvas.getContext('2d')
-    network = new HopfieldNetwork(boardSize * boardSize)
+    apply()
+
     canvas.addEventListener('click', (event) => {
-      console.log(event)
       const x = parseInt(event.offsetX / cellSize)
       const y = parseInt(event.offsetY / cellSize)
       const cell = x * boardSize + y
@@ -32,32 +23,7 @@ const Board = (() => {
       clear(canvas)
       drawNetwork(context, boardSize, cellSize, network)
     })
-
-    // network.initRandom()
-    network.initRandomSymmetrical()
-    network.clearState()
-
-    network.setCell(0)
-    network.setCell(1)
-    network.setCell(9)
-    network.setCell(11)
-
-    console.log(network)
-
-    drawNetwork(context, boardSize, cellSize, network)
-
-    // paintBlack(0, 0)
-    // paintBlack(1, 2)
-    // paintBlack(2, 2)
-    // paintBlack(9, 9)
   })
-
-  function iterate() {
-    clear(canvas)
-    network.iterate()
-    drawNetwork(context, boardSize, cellSize, network)
-    console.log(network)
-  }
 
   function paintBlack(context, cellSize, x, y) {
     context.fillRect(x * cellSize, y * cellSize, cellSize, cellSize)
@@ -75,7 +41,96 @@ const Board = (() => {
     }
   }
 
+  function iterate() {
+    clear(canvas)
+    network.iterate()
+    drawNetwork(context, boardSize, cellSize, network)
+    console.log(network)
+  }
+
+  function apply() {
+    canvas = document.getElementById('canvas')
+    context = canvas.getContext('2d')
+
+    const boardSizeInput = document.getElementById('boardSize')
+    const cellSizeInput = document.getElementById('cellSize')
+    const randomSeedInput = document.getElementById('randomSeed')
+
+    Math.seedrandom(randomSeedInput.value)
+    console.log(`Random seed: ${randomSeedInput.value}`)
+
+    boardSize = boardSizeInput.value
+    cellSize = cellSizeInput.value
+    canvasSize = boardSize * cellSize
+    canvas.width = canvasSize
+    canvas.height = canvasSize
+    network = new HopfieldNetwork(boardSize * boardSize)
+    network.initRandomSymmetrical()
+    network.clearState()
+
+    network.setCell(0)
+    network.setCell(1)
+    network.setCell(2)
+    network.setCell(3)
+
+    drawNetwork(context, boardSize, cellSize, network)
+  }
+
+  function populateHNNInputs() {
+    const thresholds = document.getElementById('thresholds')
+    const weights = document.getElementById('weights')
+
+    while(thresholds.firstChild) {
+      thresholds.removeChild(thresholds.firstChild)
+    }
+
+    while(weights.firstChild) {
+      weights.removeChild(weights.firstChild)
+    }
+
+    for (let i = 0; i < network.getSize(); i++) {
+      const thresholdInput = document.createElement('input')
+      thresholdInput.id = `threshold-${i}`
+      thresholdInput.type = 'number'
+      thresholdInput.value = network.getThreshold(i)
+      thresholds.append(thresholdInput)
+
+      const weightRow = document.createElement('div')
+
+      for (let j = 0; j < network.getSize(); j++) {
+        const weightInput = document.createElement('input')
+        weightInput.id = `weight-${i}-${j}`
+        weightInput.type = 'number'
+        weightInput.value = network.getWeight(i, j)
+        weightRow.append(weightInput)
+      }
+
+      weights.append(weightRow)
+    }
+  }
+
+  function saveHNN() {
+    for (let i = 0; i < network.getSize(); i++) {
+      const thresholdInput = document.getElementById(`threshold-${i}`)
+      network.setThreshold(i, thresholdInput.value)
+
+      for (let j = 0; j < network.getSize(); j++) {
+        const weightInput = document.getElementById(`weight-${i}-${j}`)
+        network.setWeight(i, j, weightInput.value)
+      }
+    }
+  }
+
+  function clearHNN() {
+    network.clearAll()
+    populateHNNInputs()
+  }
+
   return {
-    iterate
+    iterate,
+    apply,
+    populateHNNInputs,
+    saveHNN,
+    clearHNN
   }
 })()

@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Hopfield Network</title>
-  <script src=lib/seedrandom.min.js></script>
+  <script src="lib/jquery-3.3.1.slim.min.js"></script>
+  <script src="lib/popper.min.js"></script>
+  <script src="lib/bootstrap.min.js"></script>
+  <script src="lib/seedrandom.min.js"></script>
   <script src="HopfieldNetwork.js" type="text/javascript"></script>
   <script src="index.js" type="text/javascript"></script>
   <link rel="stylesheet" href="index.css">
@@ -11,6 +14,66 @@
 </head>
 <body>
   <canvas id="canvas"></canvas>
-  <button id="iterate" onclick="Board.iterate()">Iterate</button>
+  <div class="controls">
+    <div class="input-group mb-3">
+      <button id="iterate" type="button" class="btn btn-primary" onclick="Board.iterate()">Iterate</button>
+    </div>
+    <div class="input-group input-group-sm mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Board Size</span>
+      </div>
+      <input id="boardSize" type="number" value="2" class="form-control" aria-label="Board Size">
+    </div>
+    <div class="input-group input-group-sm mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Cell Size</span>
+      </div>
+      <input id="cellSize" type="number" value="200" class="form-control" aria-label="Cell Size">
+    </div>
+    <div class="input-group input-group-sm mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Random seed</span>
+      </div>
+      <input id="randomSeed" type="number" class="form-control" aria-label="Cell Size">
+    </div>
+    <div class="input-group mb-3">
+      <button type="button" class="btn btn-secondary" onclick="Board.populateHNNInputs()" data-toggle="modal" data-target="#HNNModal">
+        Hopfield Network
+      </button>
+    </div>
+    <div class="input-group mb-3">
+      <button id="apply" type="button" class="btn btn-primary" onclick="Board.apply()">Apply</button>
+    </div>
+  </div>
+
+  <div class="modal fade" id="HNNModal" tabindex="-1" role="dialog" aria-labelledby="HNNModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="HNNModalLabel">Hopfield Neural Network</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <span>Thresholds</span>
+            <div id="thresholds"></div>
+          </div>
+          <div>
+            <span>Weights</span>
+            <div id="weights"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="">Import</button>
+          <button type="button" class="btn btn-secondary" onclick="">Export</button>
+          <button type="button" class="btn btn-secondary" onclick="Board.clearHNN()">Clear Network</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="Board.saveHNN()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

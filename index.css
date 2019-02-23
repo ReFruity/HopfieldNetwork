@@ -1,8 +1,30 @@
+body {
+  display: flex;
+  justify-content: flex-start;
+}
+
 #canvas {
   border: 1px solid black;
   user-select: none;
+  margin: 10px;
 }
 
-#iterate {
-  vertical-align: top;
+.controls {
+  width: 295px;
+  margin-top: 10px;
+}
+
+.controls button {
+  width: 100%;
+}
+
+#HNNModal input {
+  width: 30px;
+  text-align: center;
+}
+
+#HNNModal input[type=number]::-webkit-inner-spin-button,
+#HNNModal input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
