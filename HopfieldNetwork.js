@@ -58,6 +58,23 @@ class HopfieldNetwork {
     return this._size
   }
 
+  getEnergy() {
+    let sum1 = 0, sum2 = 0
+
+    for (let i = 0; i < this._size; i++) {
+      const cell1 = this._state[i] === 1 ? 1 : -1
+
+      for (let j = 0; j < this._size; j++) {
+        const cell2 = this._state[j] === 1 ? 1 : -1
+        sum1 += this._weights[i][j] * cell1 * cell2
+      }
+
+      sum2 = this._thresholds[i] * cell1
+    }
+
+    return -1/2 * sum1 + sum2
+  }
+
   iterate() {
     const newState = []
 

@@ -46,6 +46,7 @@ const Board = (() => {
     network.iterate()
     drawNetwork(context, boardSize, cellSize, network)
     console.log(network)
+    console.log(network.getEnergy())
   }
 
   function apply() {
