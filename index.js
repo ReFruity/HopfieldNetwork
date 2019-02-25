@@ -11,7 +11,7 @@ const Board = (() => {
     canvas.addEventListener('click', (event) => {
       const x = parseInt(event.offsetX / cellSize)
       const y = parseInt(event.offsetY / cellSize)
-      const cell = x * boardSize + y
+      const cell = y * boardSize + x
       const value = network.getCell(cell)
       
       if (value === 1) {
@@ -36,7 +36,7 @@ const Board = (() => {
   function drawNetwork(context, boardSize, cellSize, network) {
     for (let i = 0; i < network.getSize(); i++) {
       if (network.getCell(i) === 1) {
-        paintBlack(context, cellSize, parseInt(i / boardSize), i % boardSize)
+        paintBlack(context, cellSize, i % boardSize, parseInt(i / boardSize))
       }
     }
   }
@@ -87,6 +87,13 @@ const Board = (() => {
 
     while(weights.firstChild) {
       weights.removeChild(weights.firstChild)
+    }
+
+    if (network.getSize() > 25) {
+      const alert = document.createElement('span')
+      alert.innerText = 'Threshold and weight editing allowed only for networks with size less or equal 25'
+      weights.append(alert)
+      return
     }
 
     for (let i = 0; i < network.getSize(); i++) {

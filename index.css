@@ -10,7 +10,7 @@ body {
 }
 
 .controls {
-  width: 295px;
+  min-width: 295px;
   margin-top: 10px;
 }
 
